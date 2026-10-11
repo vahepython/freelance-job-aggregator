@@ -37,3 +37,8 @@ def country_keyboard() -> InlineKeyboardMarkup:
     )
 
     return builder.as_markup()
+
+def get_gmail_keyboard() -> InlineKeyboardMarkup:
+    builder = InlineKeyboardBuilder()
+    builder.button(text="Connect Gmail", callback_data="gmail_connect")
+    return builder.as_markup()

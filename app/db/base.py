@@ -20,5 +20,5 @@ class Model(DeclarativeBase):
     id: Mapped[int] = mapped_column(Integer, primary_key=True, unique=True, nullable=False, index=True)
 
 async def db_session():
-    async with async_session() as session:
+    async with SessionFactory() as session:
         yield session

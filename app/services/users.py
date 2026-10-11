@@ -10,6 +10,7 @@ from app.bot.keyboards.menu import country_keyboard
 from app.db.models.user import User
 from app.bot.enums import CountryEnum
 from app.services.utilities import get_user
+from app.bot.keyboards.menu import get_gmail_keyboard
 
 router = Router()
 logger = logging.getLogger(__name__)
@@ -98,6 +99,12 @@ async def select_country(
 
     try:
         await session.commit()
+        if isinstance(callback.message, Message):
+            await callback.message.answer(
+                "Теперь подключи Gmail.\n"
+                "Now connect your Gmail account.",
+                reply_markup=get_gmail_keyboard(),
+            )
     except SQLAlchemyError:
         await session.rollback()
         logger.exception("Failed to save user country")
