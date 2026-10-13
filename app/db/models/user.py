@@ -1,8 +1,9 @@
 from sqlalchemy import BigInteger, Enum
-from sqlalchemy.orm import Mapped, mapped_column
+from sqlalchemy.orm import Mapped, mapped_column, relationship
 from app.db.base import Model
 
 from app.bot.enums import CountryEnum
+from app.db.models.google_account import GoogleAccount
 
 class User(Model):
 
@@ -15,4 +16,9 @@ class User(Model):
             values_callable=lambda enum: [item.value for item in enum],
         ),
         nullable=True,
+    )
+    google_account: Mapped["GoogleAccount | None"] = relationship(
+        back_populates="user",
+        cascade="save-update, merge, delete, delete-orphan",
+        passive_deletes=True,
     )

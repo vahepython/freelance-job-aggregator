@@ -15,7 +15,7 @@ class Model(DeclarativeBase):
 
     @declared_attr.directive
     def __tablename__(cls):
-        return cls.__name__.lower()
+        return f"{cls.__name__.lower()}s"
 
     id: Mapped[int] = mapped_column(Integer, primary_key=True, unique=True, nullable=False, index=True)
 

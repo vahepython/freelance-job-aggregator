@@ -1,5 +1,7 @@
 from sqlalchemy.ext.asyncio import AsyncSession
 from sqlalchemy import select
+from httpx import AsyncClient, ASGITransport
+
 from app.db.models.user import User
 
 from redis.asyncio import Redis
@@ -16,3 +18,7 @@ async def get_user(session: AsyncSession, user_id: int) -> User | None:
 
 def get_redis() -> Redis:
     return shared_redis_client
+
+def get_async_client() -> AsyncClient:
+    client = AsyncClient(transport=ASGITransport)
+    return client
