@@ -1,9 +1,12 @@
+from typing import TYPE_CHECKING
+if TYPE_CHECKING:
+    from app.db.models.google_account import GoogleAccount
 from sqlalchemy import BigInteger, Enum
 from sqlalchemy.orm import Mapped, mapped_column, relationship
 from app.db.base import Model
 
 from app.bot.enums import CountryEnum
-from app.db.models.google_account import GoogleAccount
+
 
 class User(Model):
 

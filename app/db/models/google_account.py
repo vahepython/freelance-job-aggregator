@@ -1,18 +1,18 @@
 from datetime import datetime, UTC
+from typing import TYPE_CHECKING
+if TYPE_CHECKING:
+    from app.db.models.user import User
 
 from sqlalchemy import DateTime, ForeignKey, String, Text
 from sqlalchemy.dialects.postgresql import JSONB
 from sqlalchemy.orm import Mapped, mapped_column, relationship
 
 from app.db.base import Model
-from app.db.models.user import User
-
 
 class GoogleAccount(Model):
 
-    user_id: Mapped[int] = mapped_column(ForeignKey("users.id"), nullable=False,
-                                         unique=True,
-                                         ondelete="CASCADE")
+    user_id: Mapped[int] = mapped_column(ForeignKey("users.id", ondelete="CASCADE"), nullable=False,
+                                         unique=True)
     encrypted_refresh_token: Mapped[str] = mapped_column(Text, nullable=False)
     email: Mapped[str | None] = mapped_column(String(320), nullable=True)
     datetime: Mapped[datetime] = mapped_column(DateTime(timezone=True),

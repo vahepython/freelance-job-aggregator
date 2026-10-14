@@ -44,7 +44,8 @@ async def oauth_google_start(ticket: str =  Query(...), session: AsyncSession = 
         logger.exception("Error connecting to Redis: ")
         raise HTTPException(
             status_code=503,
-            detail="Сервис временно недоступен. Попробуй позже.",
+            detail="Сервис временно недоступен. Попробуй позже. \n"
+                   "Service temporary unavailable. Try later.",
         )
 
     if user_id is None:
@@ -133,7 +134,8 @@ async def get_google_callback(
         logger.exception("Failed to read OAuth attempt")
         raise HTTPException(
             status_code=status.HTTP_503_SERVICE_UNAVAILABLE,
-            detail="Сервис временно недоступен. Попробуй позже.",
+            detail="Сервис временно недоступен. Попробуй позже. \n"
+                   "Service unavailable now. Try again later",
         )
 
     if info_json is None:
@@ -153,7 +155,7 @@ async def get_google_callback(
 
     if not isinstance(info, dict):
         raise HTTPException(
-            status_code=status.HTTP_500_INTERNAL_SERVER_ERROR,
+            status_code=status.HTTP_400_BAD_REQUEST,
             detail="Invalid OAuth attempt data.",
         )
 
@@ -161,7 +163,7 @@ async def get_google_callback(
 
     if not isinstance(expected_browser_id, str):
         raise HTTPException(
-            status_code=status.HTTP_500_INTERNAL_SERVER_ERROR,
+            status_code=status.HTTP_400_BAD_REQUEST,
             detail="Invalid OAuth browser session data.",
         )
 
