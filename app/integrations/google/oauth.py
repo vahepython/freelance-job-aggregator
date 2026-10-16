@@ -31,7 +31,7 @@ async def exchange_code_for_tokens(
         "code": code,
         "client_id": settings.client_id,
         "client_secret": settings.client_secret,
-        "redirect_uri": settings.redirect_uri,
+        "redirect_uri": settings.google_redirect_uri,
         "grant_type": "authorization_code",
     }
 

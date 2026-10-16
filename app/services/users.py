@@ -42,13 +42,8 @@ async def welcome_user(message: Message, session: AsyncSession):
             "🌍 First, select your country. "
             "If it isn’t listed, tap “Другая / Other”."
         )
-        await message.answer(text=welcome_text
-                             )
-    elif user.country is None:
-        await message.answer(
-            "Выбери страну / Select your country:",
-            reply_markup=country_keyboard(),
-        )
+        await message.answer(text=welcome_text, reply_markup=country_keyboard(), parse_mode="HTML")
+
     else:
         await message.answer("С возвращением! / Welcome back!")
 

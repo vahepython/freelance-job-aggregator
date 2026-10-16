@@ -31,6 +31,7 @@ from app.integrations.google.oauth import (
     InvalidAuthorizationCodeError, GoogleOAuthError
 )
 from app.core.encryption import encrypt_refresh_token
+from app.services.utilities import notify_gmail_connected
 
 logger = logging.getLogger(__name__)
 oauth_router = APIRouter(prefix="/oauth", tags=["oauth"])
@@ -82,7 +83,7 @@ async def oauth_google_start(ticket: str =  Query(...), session: AsyncSession = 
         )
 
     params = {
-        "client_id": settings.google_client_id,
+        "client_id": settings.client_id,
         "redirect_uri": settings.google_redirect_uri,
         "response_type": "code",
         "scope": "https://www.googleapis.com/auth/gmail.readonly",
@@ -296,6 +297,7 @@ async def get_google_callback(
                 existing_account.granted_scopes = granted_scopes
 
             await session.commit()
+            await notify_gmail_connected(chat_id=user.chat_id)
 
         except InvalidAuthorizationCodeError:
             response = JSONResponse(
@@ -355,7 +357,8 @@ async def get_google_callback(
             response = JSONResponse(
                 content={
                     "detail": (
-                        "Gmail успешно подключён. Вернись в Telegram."
+                        "Gmail успешно подключён. Вернись в Telegram. \n"
+                        "Gmail successfully connected. Return to telegram. "
                     )
                 },
             )

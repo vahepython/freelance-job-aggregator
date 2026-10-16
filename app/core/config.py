@@ -4,8 +4,8 @@ from pydantic_settings import BaseSettings, SettingsConfigDict
 class Settings(BaseSettings):
     database_url: str
     bot_token: str
-    google_client_id: str
-    google_client_secret: str
+    client_id: str
+    client_secret: str
     google_redirect_uri: str
     encryption_key: str
 
