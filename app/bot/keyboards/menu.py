@@ -42,3 +42,10 @@ def get_gmail_keyboard() -> InlineKeyboardMarkup:
     builder = InlineKeyboardBuilder()
     builder.button(text="Connect Gmail", callback_data="gmail_connect")
     return builder.as_markup()
+
+def done_keyboard() -> InlineKeyboardMarkup:
+    builder = InlineKeyboardBuilder()
+    builder.button(text="Готово ✅ \n"
+                        "Done ✅", callback_data="keyword_done")
+
+    return builder.as_markup()

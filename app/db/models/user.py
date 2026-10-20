@@ -1,6 +1,7 @@
 from typing import TYPE_CHECKING
 if TYPE_CHECKING:
     from app.db.models.google_account import GoogleAccount
+    from app.db.models.keywords import Keyword
 from sqlalchemy import BigInteger, Enum
 from sqlalchemy.orm import Mapped, mapped_column, relationship
 from app.db.base import Model
@@ -21,6 +22,11 @@ class User(Model):
         nullable=True,
     )
     google_account: Mapped["GoogleAccount | None"] = relationship(
+        back_populates="user",
+        cascade="save-update, merge, delete, delete-orphan",
+        passive_deletes=True,
+    )
+    keywords: Mapped[list["Keyword"]] = relationship(
         back_populates="user",
         cascade="save-update, merge, delete, delete-orphan",
         passive_deletes=True,

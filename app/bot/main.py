@@ -8,6 +8,7 @@ from app.bot.middleware.database import DatabaseMiddleware
 from app.core.config import settings
 from app.core.redis_connect import redis_connection
 from app.services.users import router as start_router
+from app.bot.handlers.keywords import keywords_router
 
 
 async def main():
@@ -16,6 +17,7 @@ async def main():
 
     dp.include_router(start_router)
     dp.include_router(gmail_router)
+    dp.include_router(keywords_router)
 
     dp.callback_query.middleware(DatabaseMiddleware())
     dp.message.middleware(DatabaseMiddleware())
