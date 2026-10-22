@@ -88,7 +88,8 @@ async def oauth_google_start(ticket: str =  Query(...), session: AsyncSession = 
         "response_type": "code",
         "scope": "https://www.googleapis.com/auth/gmail.readonly",
         "access_type": "offline",
-        "state": state
+        "state": state,
+        "prompt": "consent"
     }
 
     authorization_url = (

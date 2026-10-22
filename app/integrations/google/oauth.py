@@ -13,6 +13,8 @@ GMAIL_READONLY_SCOPE = "https://www.googleapis.com/auth/gmail.readonly"
 class GoogleOAuthError(Exception):
     pass
 
+class GoogleReconnectRequired(Exception):
+    pass
 
 class InvalidAuthorizationCodeError(GoogleOAuthError):
     pass
@@ -82,3 +84,29 @@ async def exchange_code_for_tokens(
         raise GoogleOAuthError("Gmail read permission was not granted.")
 
     return tokens
+
+async def refresh_access_token(client: httpx.AsyncClient,
+                               refresh_token: str) -> str:
+    response = await client.post("https://oauth2.googleapis.com/token", data={
+        "grant_type": "refresh_token",
+        "refresh_token": refresh_token,
+        "client_id": settings.client_id,
+        "client_secret": settings.client_secret,
+    }, timeout=10.0)
+
+    try:
+        payload = response.json()
+    except ValueError as exc:
+        raise RuntimeError("Invalid JSON is returned") from exc
+
+    if not isinstance(payload, dict):
+        raise TypeError("Invalid data type")
+
+    if response.status_code == 400 and payload.get("error") == "access_denied":
+        raise GoogleReconnectRequired("Refresh token has been expired. cConnect your gmail again")
+
+    access_token = payload.get("access_token")
+    if not isinstance(access_token, str) or not access_token.strip():
+        raise RuntimeError("Invalid access token was returned.")
+
+    return access_token

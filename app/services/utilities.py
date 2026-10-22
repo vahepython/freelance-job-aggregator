@@ -39,8 +39,6 @@ async def get_async_client() -> AsyncIterator[httpx.AsyncClient]:
         yield client
 
 
-
-
 async def notify_gmail_connected(chat_id: int):
     keyboard = InlineKeyboardMarkup(
         inline_keyboard=[
@@ -77,7 +75,8 @@ async def finish_keywords(
     words = list(dict.fromkeys(data.get("keywords", [])))
 
     if not min_keywords <= len(words) <= max_keywords:
-        await message.answer("Нужно добавить от 3 до 10 keywords.")
+        await message.answer("Нужно добавить от 3 до 10 keywords. "
+                             "At least 3 keywords should be added. ")
         return
 
     try:

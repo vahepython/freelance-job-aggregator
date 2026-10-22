@@ -93,7 +93,8 @@ async def receive_keyword(
 
     if len(words) >= MAX_KEYWORDS:
         await message.answer(
-            "Достигнут лимит 10 keywords. Нажми «Готово».",
+            "Достигнут лимит 10 keywords. Нажми «Готово»."
+            "You have reached the limit. Press «Done»",
             reply_markup=done_keyboard(),
         )
         return
@@ -110,7 +111,8 @@ async def receive_keyword(
 
     if keyword in words:
         await message.answer(
-            "Этот keyword уже добавлен."
+            "Этот keyword уже добавлен. "
+            "Keyword already present. "
         )
         return
 
@@ -131,7 +133,7 @@ async def receive_keyword(
         f"Всего: {len(words)}/{MAX_KEYWORDS}\n\n"
         f"Твой список: {', '.join(words)}",
         reply_markup=(
-            done_keyboard
+            done_keyboard()
             if len(words) >= MIN_KEYWORDS
             else None
         ),
@@ -141,7 +143,8 @@ async def receive_keyword(
 @keywords_router.message(Keywords.waiting_for_keywords)
 async def receive_non_text(message: Message):
     await message.answer(
-        "Отправь keyword текстовым сообщением."
+        "Отправь keyword текстовым сообщением. \n"
+        "Send the keywords by text message. "
     )
 
 
@@ -161,7 +164,9 @@ async def confirm_keywords(
     if current_state != Keywords.waiting_for_keywords.state:
         await callback.message.answer(
             "Этот ввод уже завершён. "
-            "Нажми «Настроить keywords» для нового списка."
+            "Нажми «Настроить keywords» для нового списка. "
+            "Input already finished. "
+            "Press «Keywords setup» for a new keyword."
         )
         return
 
